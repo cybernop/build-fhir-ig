@@ -1,9 +1,11 @@
 ARG OS_BASE
+ARG SUSHI_VERSION
 
-FROM ghcr.io/cybernop/build-fhir-profiles:base-ubuntu AS base-ubuntu
+FROM ubuntu AS base-ubuntu
 
 RUN apt update \
     && apt install -y \
+    curl \
     openjdk-21-jre \
     ruby-full \
     build-essential \

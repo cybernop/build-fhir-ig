@@ -3,8 +3,6 @@ services:
     image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
     build:
       target: base-ubuntu
-      args:
-        - OS_BASE=ubuntu
 
   build-fhir-ig-online:
     image: ghcr.io/cybernop/build-fhir-ig:online-ubuntu
