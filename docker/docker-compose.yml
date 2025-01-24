@@ -42,3 +42,13 @@ services:
       args:
         - OS_BASE=ubuntu
         - PUB_VERSION=1.8.8
+
+  build-fhir-ig-1-8-8-sushi-offline:
+    image: ghcr.io/cybernop/build-fhir-ig:1.8.8-sushi
+    build:
+      dockerfile: Dockerfile.final
+      target: offline-sushi
+      args:
+        - OS_BASE=ubuntu
+        - PUB_VERSION=1.8.8
+        - SUSHI_VERSION=3.11.0

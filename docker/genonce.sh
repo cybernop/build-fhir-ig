@@ -14,7 +14,11 @@ printf "\nCopy files to working directory..."
 cp -r $PROJECT_DIR/* $WORKSPACE
 
 cd $WORKSPACE
-# rm -r fsh-generated
+
+if [ -n ${SUSHI_VERSION} ] ; then
+    rm -r fsh-generated
+fi
+
 rm -r input-cache
 rm -r output
 rm -r temp
@@ -27,7 +31,11 @@ printf " done\n\n"
 export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Dfile.encoding=UTF-8"
 
 if test -f "$publisher"; then
-    java -jar $publisher -ig . -no-sushi
+    if [ -z ${SUSHI_VERSION} ] ; then
+        java -jar $publisher -ig . -no-sushi
+    else
+        java -jar $publisher -ig .
+    fi
 else
     echo IG Publisher NOT FOUND. Aborting...
 fi
