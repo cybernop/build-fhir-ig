@@ -122,7 +122,7 @@ jobs:
             type=raw,value=${{ matrix.pub_version }},enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION }}
             type=raw,value=latest,enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION && matrix.pub_version == env.LATEST_PUB_VERSION}}
             type=raw,value=${{ matrix.pub_version }}-${{ matrix.os }},enable=${{ matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=$${{ matrix.version }}-${{ matrix.os }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION }}
+            type=raw,value=${{ matrix.version }}-${{ matrix.os }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION }}
             type=raw,value=${{ matrix.os }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.version == env.DEFAULT_VERSION }}
             type=raw,value=${{ matrix.version }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.os == env.DEFAULT_OS }}
 
