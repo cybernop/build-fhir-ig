@@ -1,19 +1,35 @@
 services:
   build-fhir-ig-base:
-    image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
+    image: ghcr.io/cybernop/build-fhir-ig:base
     build:
       target: base-ubuntu
 
   build-fhir-ig-online:
-    image: ghcr.io/cybernop/build-fhir-ig:online-ubuntu
+    image: ghcr.io/cybernop/build-fhir-ig:online
     build:
       target: online
       args:
         - OS_BASE=ubuntu
 
+  build-fhir-ig-1-8-8-online:
+    image: ghcr.io/cybernop/build-fhir-ig:online-1.8.8
+    build:
+      target: online
+      args:
+        - OS_BASE=ubuntu
+        - PUB_VERSION=1.8.8
+
   build-fhir-ig-offline:
-    image: ghcr.io/cybernop/build-fhir-ig:offline-ubuntu
+    image: ghcr.io/cybernop/build-fhir-ig:latest
     build:
       target: offline
       args:
         - OS_BASE=ubuntu
+
+  build-fhir-ig-1-8-8-offline:
+    image: ghcr.io/cybernop/build-fhir-ig:1.8.8
+    build:
+      target: offline
+      args:
+        - OS_BASE=ubuntu
+        - PUB_VERSION=1.8.8

@@ -6,6 +6,7 @@ FROM ubuntu AS base-ubuntu
 RUN apt update \
     && apt install -y \
     curl \
+    git \
     openjdk-21-jre \
     ruby-full \
     build-essential \
@@ -19,20 +20,32 @@ RUN gem install jekyll bundler
 
 FROM ghcr.io/cybernop/build-fhir-ig:base-$OS_BASE AS online
 
+ARG PUB_VERSION
+ENV PUB_VERION=${PUB_VERSION}
+
 COPY entrypoint-online.sh /root/entrypoint.sh
-RUN chmod a+rwx /root \
-    && chmod a+x /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
+RUN chmod a+rwx /root
+RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
 
 ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
 
 
 FROM ghcr.io/cybernop/build-fhir-ig:base-$OS_BASE AS offline
 
+ARG PUB_VERSION
+ENV PUB_VERION=${PUB_VERSION}
+
 RUN mkdir /root/input-cache \
     && chmod a+rx /root \
-    && curl -L https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar -o "/root/publisher.jar" --create-dirs
+    && if [ -z ${PUB_VERSION} ] ; then curl -L https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar -o "/root/publisher.jar" --create-dirs ; else curl -L https://github.com/HL7/fhir-ig-publisher/releases/download/$PUB_VERSION/publisher.jar -o "/root/publisher.jar" --create-dirs ; fi
 
 COPY entrypoint-offline.sh /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
 RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
 
 ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]

@@ -5,7 +5,7 @@
 
 #!/bin/bash
 publisher_jar=publisher.jar
-input_cache_path=/root/
+input_cache_path=$HOME/
 echo Checking internet connection...
 curl -sSf tx.fhir.org > /dev/null
 
@@ -19,15 +19,4 @@ fi
 
 echo "$txoption"
 
-export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Dfile.encoding=UTF-8"
-
-PROJECT_DIR=$1
-cd $PROJECT_DIR
-
-publisher=$input_cache_path/$publisher_jar
-if test -f "$publisher"; then
-    java -jar $publisher -ig . -no-sushi $txoption $*
-
-else
-    echo IG Publisher NOT FOUND. Aborting...
-fi
+/root/genonce.sh $1
