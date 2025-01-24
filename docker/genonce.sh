@@ -15,7 +15,8 @@ cp -r $PROJECT_DIR/* $WORKSPACE
 
 cd $WORKSPACE
 
-if [ -n ${SUSHI_VERSION} ] ; then
+# Only remove this folder when building with sushi
+if [ -n "${SUSHI_VERSION}" ] ; then
     rm -r fsh-generated
 fi
 
