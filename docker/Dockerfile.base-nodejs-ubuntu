@@ -2,4 +2,5 @@ FROM ghcr.io/cybernop/build-fhir-ig:base-ubuntu
 
 RUN apt update \
     && apt install -y \
-    nodejs
+    nodejs \
+    npm
