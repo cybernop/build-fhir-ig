@@ -1,4 +1,4 @@
-name: Base Image
+name: Ubuntu Base Image
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -66,9 +66,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
-          file: "{context}/Dockerfile.base"
+          file: "docker/Dockerfile.base-${{ matrix.os }}"
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: base-${{ matrix.os }}

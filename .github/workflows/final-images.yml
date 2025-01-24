@@ -13,7 +13,7 @@ on:
       - "**/entrypoint*.sh"
       - "**/genonce.sh"
   workflow_run:
-    workflows: ["Base Image"]
+    workflows: ["Ubuntu Base Image"]
     types:
       - completed
 
@@ -84,6 +84,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
+          file: "docker/Dockerfile.final"
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}

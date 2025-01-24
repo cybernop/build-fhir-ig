@@ -2,8 +2,7 @@ services:
   build-fhir-ig-base:
     image: ghcr.io/cybernop/build-fhir-ig:base
     build:
-      dockerfile: Dockerfile.base
-      target: base-ubuntu
+      dockerfile: Dockerfile.base-ubuntu
 
   build-fhir-ig-online:
     image: ghcr.io/cybernop/build-fhir-ig:online
