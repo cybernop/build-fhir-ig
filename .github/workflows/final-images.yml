@@ -175,7 +175,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.version }}
+          target: ${{ matrix.version }}-sushi
           build-args: |
             OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
