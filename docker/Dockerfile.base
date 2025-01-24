@@ -1,0 +1,15 @@
+FROM ubuntu AS base-ubuntu
+
+RUN apt update \
+    && apt install -y \
+    curl \
+    git \
+    openjdk-21-jre \
+    ruby-full \
+    build-essential \
+    zlib1g-dev
+
+ENV GEM_HOME=/root/gems
+ENV PATH=$GEM_HOME/bin:$PATH
+
+RUN gem install jekyll bundler
