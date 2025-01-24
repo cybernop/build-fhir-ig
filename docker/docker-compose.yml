@@ -1,8 +1,13 @@
 services:
   build-fhir-ig-base:
-    image: ghcr.io/cybernop/build-fhir-ig:base
+    image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
     build:
       dockerfile: Dockerfile.base-ubuntu
+
+  build-fhir-ig-node-base:
+    image: ghcr.io/cybernop/build-fhir-ig:base-nodejs-ubuntu
+    build:
+      dockerfile: Dockerfile.base-nodejs-ubuntu
 
   build-fhir-ig-online:
     image: ghcr.io/cybernop/build-fhir-ig:online
