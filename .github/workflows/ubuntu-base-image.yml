@@ -10,6 +10,7 @@ on:
     paths:
       - ".github/workflows/ubuntu-base-image.yml"
       - "**/Dockerfile.base-ubuntu"
+  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
