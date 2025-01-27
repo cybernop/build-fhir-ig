@@ -28,4 +28,4 @@ PROJECT_MOUNT=${PROJECT_DIR}:/project
 FHIR_CACHE_MOUNT=${HOME}/.fhir/packages:/root/.fhir/packages
 OUTPUT_MOUNT=${OUTPUT_DIR}:/output
 
-docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT $IMAGE
+docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT --pull always $IMAGE
