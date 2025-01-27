@@ -17,13 +17,13 @@ cd $WORKSPACE
 
 # Only remove this folder when building with sushi
 if [ ! -z ${SUSHI_VERSION} ] ; then
-    rm -r fsh-generated
+    rm -rf fsh-generated
 fi
 
-rm -r input-cache
-rm -r output
-rm -r temp
-rm -r template
+rm -rf input-cache
+rm -rf output
+rm -rf temp
+rm -rf template
 printf " done\n\n"
 
 # Download and inflate the FHIR packages if building profiles with FSH Sushi
