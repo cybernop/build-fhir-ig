@@ -28,7 +28,7 @@ printf " done\n\n"
 
 # Download and inflate the FHIR packages if building profiles with FSH Sushi
 if [ ! -z ${SUSHI_VERSION} ] ; then
-    prinft "\n\nInstall and inflate FHIR packages...\n"
+    printf "\n\nInstall and inflate FHIR packages...\n"
     fhir restore
     printf "\n...done!\n\n"
 fi
