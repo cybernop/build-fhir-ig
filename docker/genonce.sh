@@ -16,7 +16,7 @@ cp -r $PROJECT_DIR/* $WORKSPACE
 cd $WORKSPACE
 
 # Only remove this folder when building with sushi
-if [ -n "${SUSHI_VERSION}" ] ; then
+if [ ! -z ${SUSHI_VERSION} ] ; then
     rm -r fsh-generated
 fi
 
@@ -25,6 +25,13 @@ rm -r output
 rm -r temp
 rm -r template
 printf " done\n\n"
+
+# Download and inflate the FHIR packages if building profiles with FSH Sushi
+if [ ! -z ${SUSHI_VERSION} ] ; then
+    prinft "\n\nInstall and inflate FHIR packages...\n"
+    fhir restore
+    printf "\n...done!\n\n"
+fi
 
 # Run IG Publisher
 # parts taken from https://github.com/HL7/ig-publisher-scripts/blob/main/_genonce.sh
