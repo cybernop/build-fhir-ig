@@ -31,8 +31,8 @@ env:
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
-  build-image-without-sushi:
-    name: Build images without Sushi
+  image-without-sushi:
+    name: Images w/o Sushi
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -87,13 +87,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline '}}
+          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}
           build-args: |
             OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
 
-  build-image-with-sushi:
-    name: Build images with Sushi
+  image-with-sushi:
+    name: Images w/ Sushi
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -157,7 +157,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline '}}-sushi
+          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}-sushi
           build-args: |
             OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
