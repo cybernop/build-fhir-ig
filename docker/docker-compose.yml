@@ -1,16 +1,16 @@
 services:
   build-fhir-ig-base:
-    image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
+    image: cybernop/build-fhir-ig:base-ubuntu
     build:
       dockerfile: Dockerfile.base-ubuntu
 
   build-fhir-ig-node-base:
-    image: ghcr.io/cybernop/build-fhir-ig:base-nodejs-ubuntu
+    image: cybernop/build-fhir-ig:base-nodejs-ubuntu
     build:
       dockerfile: Dockerfile.base-nodejs-ubuntu
 
   build-fhir-ig-online:
-    image: ghcr.io/cybernop/build-fhir-ig:online
+    image: cybernop/build-fhir-ig:online
     build:
       dockerfile: Dockerfile.final
       target: online
@@ -18,7 +18,7 @@ services:
         - OS_BASE=ubuntu
 
   build-fhir-ig-1-8-8-online:
-    image: ghcr.io/cybernop/build-fhir-ig:online-1.8.8
+    image: cybernop/build-fhir-ig:online-1.8.8
     build:
       dockerfile: Dockerfile.final
       target: online
@@ -27,7 +27,7 @@ services:
         - PUB_VERSION=1.8.8
 
   build-fhir-ig-offline:
-    image: ghcr.io/cybernop/build-fhir-ig:latest
+    image: cybernop/build-fhir-ig:latest
     build:
       dockerfile: Dockerfile.final
       target: offline
@@ -35,7 +35,7 @@ services:
         - OS_BASE=ubuntu
 
   build-fhir-ig-1-8-8-offline:
-    image: ghcr.io/cybernop/build-fhir-ig:1.8.8
+    image: cybernop/build-fhir-ig:1.8.8
     build:
       dockerfile: Dockerfile.final
       target: offline
@@ -44,7 +44,7 @@ services:
         - PUB_VERSION=1.8.8
 
   build-fhir-ig-1-8-8-sushi-offline:
-    image: ghcr.io/cybernop/build-fhir-ig:1.8.8-sushi
+    image: cybernop/build-fhir-ig:1.8.8-sushi
     build:
       dockerfile: Dockerfile.final
       target: offline-sushi

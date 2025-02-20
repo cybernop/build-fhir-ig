@@ -22,7 +22,7 @@ else
     PROJECT_DIR=$1
 fi
 
-IMAGE=ghcr.io/cybernop/build-fhir-ig:$IGPUB_VERSION$SUSHI
+IMAGE=cybernop/build-fhir-ig:$IGPUB_VERSION$SUSHI
 
 PROJECT_MOUNT=${PROJECT_DIR}:/project
 FHIR_CACHE_MOUNT=${HOME}/.fhir/packages:/root/.fhir/packages
