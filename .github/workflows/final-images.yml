@@ -26,7 +26,6 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   LATEST_PUB_VERSION: "1.8.8"
-  LATEST_SUSHI_VERSION: "3.14.0"
   DEFAULT_OS: "ubuntu"
   DEFAULT_VERSION: "offline"
   PLATFORMS: linux/amd64,linux/arm64
@@ -38,15 +37,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["online", "offline"]
-        pub_version: ["1.8.8"]
-        os: ["ubuntu"]
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
+        pub_version:
+          - "online"
+          - "1.8.8"
+        os:
+          - "ubuntu"
+    # permissions:
+    #   contents: read
+    #   packages: write
+    #   # This is used to complete the identity challenge
+    #   # with sigstore/fulcio when running outside of PRs.
+    #   id-token: write
 
     steps:
       - name: Checkout repository
@@ -71,14 +72,8 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }}-${{ matrix.os }}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }},enable=${{ matrix.os == env.DEFAULT_OS }}
-            type=raw,value=${{ matrix.pub_version }},enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=latest,enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION && matrix.pub_version == env.LATEST_PUB_VERSION}}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.os }},enable=${{ matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=${{ matrix.version }}-${{ matrix.os }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION }}
-            type=raw,value=${{ matrix.os }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=${{ matrix.version }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.os == env.DEFAULT_OS }}
+            type=raw,value=${{ matrix.pub_version == env.LATEST_PUB_VERSION && 'latest' || matrix.pub_version }},enable=${{ matrix.os == env.DEFAULT_OS }}
+            type=raw,value=${{ matrix.pub_version == env.LATEST_PUB_VERSION && 'latest' || matrix.pub_version }}-${{ matrix.os }},enable=${{ matrix.os != env.DEFAULT_OS }}
 
       # Build and push Docker image with Buildx (push on tag)
       # https://github.com/docker/build-push-action
@@ -92,7 +87,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.version }}
+          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline '}}
           build-args: |
             OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
@@ -103,9 +98,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["online", "offline"]
-        pub_version: ["1.8.8"]
-        os: ["ubuntu"]
+        pub_version:
+          - "online"
+          - "1.8.8"
+        os:
+          - "ubuntu"
         sushi_version:
           - "3.10.0"
           - "3.11.0"
@@ -115,12 +112,12 @@ jobs:
           - "3.13.0"
           - "3.13.1"
           - "3.14.0"
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
+    # permissions:
+    #   contents: read
+    #   packages: write
+    #   # This is used to complete the identity challenge
+    #   # with sigstore/fulcio when running outside of PRs.
+    #   id-token: write
 
     steps:
       - name: Checkout repository
@@ -145,22 +142,8 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }}-sushi-${{ matrix.sushi_version }}-${{ matrix.os }}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }}-sushi-${{ matrix.os }},enable=${{ matrix.sushi_version == env.LATEST_SUSHI_VERSION}}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.os == env.DEFAULT_OS }}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.version }}-sushi,enable=${{ matrix.os == env.DEFAULT_OS && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
-            type=raw,value=${{ matrix.pub_version }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=${{ matrix.pub_version }}-sushi,enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
-            type=raw,value=sushi-${{ matrix.sushi_version }},enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION && matrix.pub_version == env.LATEST_PUB_VERSION }}
-            type=raw,value=sushi,enable=${{ matrix.os == env.DEFAULT_OS && matrix.version == env.DEFAULT_VERSION && matrix.pub_version == env.LATEST_PUB_VERSION  && matrix.sushi_version == env.LATEST_SUSHI_VERSION}}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.os }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=${{ matrix.pub_version }}-${{ matrix.os }}-sushi,enable=${{ matrix.version == env.DEFAULT_VERSION && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
-            type=raw,value=${{ matrix.version }}-${{ matrix.os }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION }}
-            type=raw,value=${{ matrix.version }}-${{ matrix.os }}-sushi,enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
-            type=raw,value=${{ matrix.os }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.version == env.DEFAULT_VERSION }}
-            type=raw,value=${{ matrix.os }}-sushi,enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.version == env.DEFAULT_VERSION && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
-            type=raw,value=${{ matrix.version }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.os == env.DEFAULT_OS }}
-            type=raw,value=${{ matrix.version }}-sushi,enable=${{ matrix.pub_version == env.LATEST_PUB_VERSION && matrix.os == env.DEFAULT_OS && matrix.sushi_version == env.LATEST_SUSHI_VERSION }}
+            type=raw,value=${{ matrix.pub_version == env.LATEST_PUB_VERSION && 'latest' || matrix.pub_version }}-sushi-${{ matrix.sushi_version }},enable=${{ matrix.os == env.DEFAULT_OS }}
+            type=raw,value=${{ matrix.pub_version == env.LATEST_PUB_VERSION && 'latest' || matrix.pub_version }}-sushi-${{ matrix.sushi_version }}-${{ matrix.os }},enable=${{ matrix.os != env.DEFAULT_OS }}
 
       # Build and push Docker image with Buildx (push on tag)
       # https://github.com/docker/build-push-action
@@ -174,7 +157,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.version }}-sushi
+          target: ${{ matrix.pub_version == 'online' && 'online' || 'offline '}}-sushi
           build-args: |
             OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
