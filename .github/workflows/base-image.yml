@@ -8,7 +8,7 @@ name: Base Images
 on:
   push:
     paths:
-      - ".github/workflows/ubuntu-base-image.yml"
+      - ".github/workflows/base-image.yml"
       - "**/Dockerfile.base-ubuntu"
   workflow_dispatch:
 
