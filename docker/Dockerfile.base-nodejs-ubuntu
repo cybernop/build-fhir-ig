@@ -1,4 +1,4 @@
-FROM cybernop/build-fhir-ig:base-ubuntu
+FROM ghcr.io/cybernop/build-fhir-ig:base-ubuntu
 
 # Install tools and libs for specific Node version and NPM
 RUN apt update \
