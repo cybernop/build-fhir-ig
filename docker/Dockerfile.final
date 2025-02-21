@@ -1,7 +1,7 @@
 ARG OS_BASE
 
 
-FROM cybernop/build-fhir-ig:base-$OS_BASE AS online
+FROM ghcr.io/cybernop/build-fhir-ig:base-$OS_BASE AS online
 
 COPY entrypoint-online.sh /root/entrypoint.sh
 COPY genonce.sh /root/genonce.sh
@@ -13,7 +13,7 @@ RUN chmod a+x /root/genonce.sh
 ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
 
 
-FROM cybernop/build-fhir-ig:base-nodejs-$OS_BASE AS online-sushi
+FROM ghcr.io/cybernop/build-fhir-ig:base-nodejs-$OS_BASE AS online-sushi
 
 ARG SUSHI_VERSION
 ENV SUSHI_VERSION=${SUSHI_VERSION}
@@ -30,7 +30,7 @@ RUN chmod a+x /root/genonce.sh
 ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
 
 
-FROM cybernop/build-fhir-ig:base-$OS_BASE AS offline
+FROM ghcr.io/cybernop/build-fhir-ig:base-$OS_BASE AS offline
 
 ARG PUB_VERSION
 ENV PUB_VERION=${PUB_VERSION}
@@ -48,7 +48,7 @@ RUN chmod a+x /root/genonce.sh
 ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
 
 
-FROM cybernop/build-fhir-ig:base-nodejs-$OS_BASE AS offline-sushi
+FROM ghcr.io/cybernop/build-fhir-ig:base-nodejs-$OS_BASE AS offline-sushi
 
 ARG PUB_VERSION
 ENV PUB_VERION=${PUB_VERSION}
