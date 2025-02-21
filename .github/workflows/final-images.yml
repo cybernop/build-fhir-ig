@@ -90,8 +90,8 @@ jobs:
           file: "docker/Dockerfile.final"
           platforms: ${{ env.PLATFORMS }}
           push: true
-          cache-from: type=registry,ref=${{ matrix.pub_version }}-${{ matrix.os }}-buildcache
-          cache-to: type=registry,ref=${{ matrix.pub_version }}-${{ matrix.os }}-buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ matrix.pub_version }}-${{ matrix.os }}-buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ matrix.pub_version }}-${{ matrix.os }}-buildcache,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}
@@ -173,8 +173,8 @@ jobs:
           file: "docker/Dockerfile.final"
           platforms: ${{ env.PLATFORMS }}
           push: true
-          cache-from: type=registry,ref=${{ matrix.pub_version }}-${{ matrix.os }}-buildcache
-          cache-to: type=registry,ref=${{ matrix.pub_version }}-${{ matrix.os }}-buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ matrix.pub_version }}-${{ matrix.os }}-buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ matrix.pub_version }}-${{ matrix.os }}-buildcache,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}-sushi
