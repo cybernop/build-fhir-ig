@@ -1,4 +1,4 @@
-name: Ubuntu Base Image
+name: Base Images
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -21,7 +21,7 @@ env:
 
 jobs:
   build-base-image:
-    name: Build base image
+    name: Base images
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
