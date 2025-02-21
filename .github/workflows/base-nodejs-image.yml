@@ -8,7 +8,7 @@ name: Base NodeJS Images
 on:
   push:
     paths:
-      - ".github/workflows/ubuntu-base-nodejs-image.yml"
+      - ".github/workflows/base-nodejs-image.yml"
       - "**/Dockerfile.base-nodejs-ubuntu"
   workflow_run:
     workflows:
@@ -64,6 +64,6 @@ jobs:
           file: "docker/Dockerfile.base-nodejs-${{ matrix.os }}"
           platforms: ${{ env.PLATFORMS }}
           push: true
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }},mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}-buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}-buildcache,mode=max
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}
