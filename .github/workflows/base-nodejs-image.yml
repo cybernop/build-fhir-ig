@@ -1,4 +1,4 @@
-name: Ubuntu Base NodeJS Image
+name: Base NodeJS Images
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -11,24 +11,28 @@ on:
       - ".github/workflows/ubuntu-base-nodejs-image.yml"
       - "**/Dockerfile.base-nodejs-ubuntu"
   workflow_run:
-    workflows: ["Ubuntu Base Image"]
+    workflows:
+      - "Base Images"
     types:
       - completed
   workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
-  # REGISTRY: ghcr.ioxx
+  REGISTRY: ghcr.ioxx
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
-  build-base-image:
-    name: Build base image
+  base-njs-image:
+    name: Build NodeJS base images
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        os:
+          - "ubuntu"
     permissions:
       contents: read
       packages: write
@@ -37,29 +41,18 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Log into github Docker registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=base-nodejs-ubuntu
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       # Build and push Docker image with Buildx (push on tag)
       # https://github.com/docker/build-push-action
@@ -68,8 +61,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
-          file: "docker/Dockerfile.base-nodejs-ubuntu"
+          file: "docker/Dockerfile.base-nodejs-${{ matrix.os }}"
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }},mode=max
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-nodejs-${{ matrix.os }}
