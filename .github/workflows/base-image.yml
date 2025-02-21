@@ -59,6 +59,6 @@ jobs:
           file: "docker/Dockerfile.base-${{ matrix.os }}"
           platforms: ${{ env.PLATFORMS }}
           push: true
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-${{ matrix.os }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-${{ matrix.os }}-buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-${{ matrix.os }}-buildcache,mode=max
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base-${{ matrix.os }}
