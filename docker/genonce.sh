@@ -39,8 +39,8 @@ if [ -z ${SUSHI_VERSION} ] ; then
 fi
 
 # Build arguments for IG Publisher
-if [ -n "${PUBLISH_URL}" ]; then
-    PUBLISH=-publish ${PUBLISH_URL}
+if [ ! -z "${PUBLISH_URL}" ]; then
+    PUBLISH="-publish ${PUBLISH_URL}"
 fi
 
 # Run IG Publisher

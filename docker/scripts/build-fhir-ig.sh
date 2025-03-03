@@ -10,10 +10,10 @@ fi
 
 if [ -z "$OUTPUT_DIR" ]; then
     OUTPUT_DIR=$PWD/output
-fi
 
-if [ ! -d "$OUTPUT_DIR" ] ; then
-  mkdir -p $OUTPUT_DIR
+    if [ ! -d "$OUTPUT_DIR" ] ; then
+    mkdir -p $OUTPUT_DIR
+    fi
 fi
 
 if [ -z "$1" ]; then
@@ -22,10 +22,14 @@ else
     PROJECT_DIR=$1
 fi
 
+if [ ! -z "$PUBLISH_URL" ]; then\
+    PUBLISH="PUBLISH_URL=$PUBLISH_URL"
+fi
+
 IMAGE=cybernop/build-fhir-ig:$IGPUB_VERSION$SUSHI
 
 PROJECT_MOUNT=${PROJECT_DIR}:/project
 FHIR_CACHE_MOUNT=${HOME}/.fhir/packages:/root/.fhir/packages
 OUTPUT_MOUNT=${OUTPUT_DIR}:/output
 
-docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT --pull always $IMAGE
+docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT -e $PUBLISH --pull always $IMAGE
