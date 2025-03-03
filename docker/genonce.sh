@@ -31,6 +31,16 @@ if [ ! -z ${SUSHI_VERSION} ] ; then
     printf "\n\nInstall and inflate FHIR packages...\n"
     fhir restore
     printf "\n...done!\n\n"
+
+fi
+
+if [ -z ${SUSHI_VERSION} ] ; then
+    NO_SUSHI=-no-sushi
+fi
+
+# Build arguments for IG Publisher
+if [ -n "${PUBLISH_URL}" ]; then
+    PUBLISH=-publish ${PUBLISH_URL}
 fi
 
 # Run IG Publisher
@@ -39,11 +49,7 @@ fi
 export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Dfile.encoding=UTF-8"
 
 if test -f "$publisher"; then
-    if [ -z ${SUSHI_VERSION} ] ; then
-        java -jar $publisher -ig . -no-sushi
-    else
-        java -jar $publisher -ig .
-    fi
+    java -jar $publisher -ig . $NO_SUSHI $PUBLISH
 else
     echo IG Publisher NOT FOUND. Aborting...
 fi
