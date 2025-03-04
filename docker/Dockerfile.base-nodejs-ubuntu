@@ -3,7 +3,8 @@ FROM ghcr.io/cybernop/build-fhir-ig:base-ubuntu
 # Install tools and libs for specific Node version and NPM
 RUN apt update \
     && apt install -y \
-    libicu74
+    libicu74 \
+    curl
 
 # Get and install Node install script
 RUN wget https://deb.nodesource.com/setup_20.x -O nodesource_setup.sh \
