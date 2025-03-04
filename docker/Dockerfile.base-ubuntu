@@ -1,17 +1,43 @@
 FROM ubuntu:24.04
 
-RUN apt update \
-    && apt install -y \
-    curl \
-    git \
+##
+# Jeykll
+##
+
+# Install dependencies
+RUN apt update && apt install -y \
     openjdk-21-jre \
     ruby-full \
     build-essential \
-    zlib1g-dev \
-    python3-pydot \
-    graphviz
+    zlib1g-dev
 
 ENV GEM_HOME=/root/gems
 ENV PATH=$GEM_HOME/bin:$PATH
 
 RUN gem install jekyll bundler
+
+##
+# Firely Terminal
+##
+
+RUN apt update && apt install -y \
+    wget
+
+# Add Microsoft's .NET SDK repository and install .NET SDK
+RUN wget https://dot.net/v1/dotnet-install.sh \
+    && bash ./dotnet-install.sh --channel 8.0 --install-dir /usr/share/dotnet \
+    && ln -s /usr/share/dotnet/dotnet /usr/local/bin \
+    && rm dotnet-install.sh
+
+# Install the Firely Terminal
+RUN dotnet tool install --global Firely.Terminal
+ENV PATH="$PATH:/root/.dotnet/tools"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
+
+##
+# Graphviz
+##
+
+RUN apt update && apt install -y \
+    python3-pydot \
+    graphviz
