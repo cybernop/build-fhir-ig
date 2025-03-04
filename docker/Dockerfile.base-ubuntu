@@ -7,7 +7,9 @@ RUN apt update \
     openjdk-21-jre \
     ruby-full \
     build-essential \
-    zlib1g-dev
+    zlib1g-dev \
+    python3-pydot \
+    graphviz
 
 ENV GEM_HOME=/root/gems
 ENV PATH=$GEM_HOME/bin:$PATH
