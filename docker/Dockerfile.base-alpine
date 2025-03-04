@@ -1,0 +1,31 @@
+FROM alpine
+
+##
+# Jeykll
+##
+
+# Install dependencies
+RUN apk add --no-cache ruby
+
+# Install build dependencies
+RUN apk add --no-cache --virtual .build-deps make gcc g++ musl-dev ruby-dev\
+    && gem install jekyll bundler \
+    && apk del .build-deps
+
+##
+# Firely Terminal
+##
+
+# Add Microsoft's .NET SDK repository and install .NET SDK
+RUN apk add --no-cache dotnet8-sdk
+
+# Install the Firely Terminal
+RUN dotnet tool install --global Firely.Terminal
+ENV PATH="$PATH:/root/.dotnet/tools"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
+
+##
+# Graphviz
+##
+
+RUN apk add --update --no-cache graphviz ttf-freefont
