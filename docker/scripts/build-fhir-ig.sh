@@ -22,7 +22,9 @@ else
     PROJECT_DIR=$1
 fi
 
-if [ ! -z "$PUBLISH_URL" ]; then\
+if [ -z "$PUBLISH_URL" ]; then
+    PUBLISH="PUBLISH_URL="
+else
     PUBLISH="PUBLISH_URL=$PUBLISH_URL"
 fi
 
