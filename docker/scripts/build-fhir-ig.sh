@@ -28,10 +28,16 @@ else
     PUBLISH="PUBLISH_URL=$PUBLISH_URL"
 fi
 
+if [ -z "$JAVA_OPTS" ]; then
+    JAVA_OPTIONS="_JAVA_OPTIONS=-Xmx2g"
+else
+    JAVA_OPTIONS="_JAVA_OPTIONS=$JAVA_OPTS"
+fi
+
 IMAGE=cybernop/build-fhir-ig:$IGPUB_VERSION$SUSHI
 
 PROJECT_MOUNT=${PROJECT_DIR}:/project
 FHIR_CACHE_MOUNT=${HOME}/.fhir/packages:/root/.fhir/packages
 OUTPUT_MOUNT=${OUTPUT_DIR}:/output
 
-docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT -e $PUBLISH --pull always $IMAGE
+docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT -e $PUBLISH -e $JAVA_OPTIONS --pull always $IMAGE
