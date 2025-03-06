@@ -4,8 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/docker-images.yaml"
-      - "**/Dockerfile.base-ubuntu"
-      - "**/Dockerfile.base-nodejs-ubuntu"
+      - "**/Dockerfile.base-*"
       - "**/Dockerfile.final"
       - "**/entrypoint*.sh"
       - "**/genonce.sh"
@@ -28,8 +27,8 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - "ubuntu"
           - "alpine"
+          - "ubuntu"
     permissions:
       contents: read
       packages: write
@@ -74,6 +73,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          - "alpine"
           - "ubuntu"
     permissions:
       contents: read
