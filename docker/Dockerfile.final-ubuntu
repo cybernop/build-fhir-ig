@@ -15,7 +15,7 @@ FROM online AS online-sushi
 ARG SUSHI_VERSION
 ENV SUSHI_VERSION=${SUSHI_VERSION}
 
-RUN apt install nodejs npm
+RUN apt install -y nodejs npm
 RUN npm install --global fsh-sushi@${SUSHI_VERSION}
 
 
@@ -42,5 +42,5 @@ FROM offline AS offline-sushi
 ARG SUSHI_VERSION
 ENV SUSHI_VERSION=${SUSHI_VERSION}
 
-RUN apt install nodejs npm
+RUN apt install -y nodejs npm
 RUN npm install --global fsh-sushi@${SUSHI_VERSION}
