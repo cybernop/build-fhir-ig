@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
-          file: "docker/Dockerfile.base-${{ matrix.os }}"
+          file: docker/Dockerfile.base-${{ matrix.os }}
           platforms: ${{ env.PLATFORMS }}
           push: true
           cache-from: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:base-${{ matrix.os }}-buildcache
@@ -133,7 +133,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
-          file: "docker/Dockerfile.final"
+          file: docker/Dockerfile.final-${{ matrix.os }}
           platforms: ${{ env.PLATFORMS }}
           push: true
           cache-from: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.pub_version }}-${{ matrix.os }}-buildcache
@@ -142,7 +142,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}
           build-args: |
-            OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
 
   image-with-sushi:
@@ -223,7 +222,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: docker
-          file: "docker/Dockerfile.final"
+          file: docker/Dockerfile.final-${{ matrix.os }}
           platforms: ${{ env.PLATFORMS }}
           push: true
           cache-from: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.pub_version }}-sushi-${{ matrix.sushi_version }}-${{ matrix.os }}-buildcache
@@ -232,6 +231,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           target: ${{ matrix.pub_version == 'online' && 'online' || 'offline' }}-sushi
           build-args: |
-            OS_BASE=${{ matrix.os }}
             PUB_VERSION=${{ matrix.pub_version }}
             SUSHI_VERSION=${{ matrix.sushi_version }}
