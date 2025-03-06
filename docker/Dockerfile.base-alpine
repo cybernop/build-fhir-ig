@@ -5,10 +5,10 @@ FROM alpine
 ##
 
 # Install dependencies
-RUN apk add --no-cache ruby
+RUN apk add --no-cache ruby-full ruby-dev
 
 # Install build dependencies
-RUN apk add --no-cache --virtual .build-deps make gcc g++ musl-dev ruby-dev\
+RUN apk add --no-cache --virtual .build-deps make gcc g++ musl-dev\
     && gem install jekyll bundler \
     && apk del .build-deps
 
@@ -29,3 +29,8 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
 ##
 
 RUN apk add --update --no-cache graphviz ttf-freefont
+
+##
+# Runtime dependcies
+##
+RUN apk add --no-cache curl openjdk21-jre

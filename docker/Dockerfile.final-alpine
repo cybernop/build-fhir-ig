@@ -1,0 +1,50 @@
+FROM ghcr.io/cybernop/build-fhir-ig:base-alpine AS online
+
+# Runtime dependcies
+RUN apk add --no-cache curl
+
+COPY entrypoint-online.sh /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
+RUN chmod a+rwx /root
+RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
+
+ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
+
+
+FROM online AS online-sushi
+
+ARG SUSHI_VERSION
+ENV SUSHI_VERSION=${SUSHI_VERSION}
+
+RUN apk add --no-cache nodejs \
+    && apk add --no-cache --virtual .build-deps npm\
+    && npm install --global fsh-sushi@${SUSHI_VERSION} \
+    && apk del .build-deps
+
+
+FROM ghcr.io/cybernop/build-fhir-ig:base-alpine AS offline
+
+ARG PUB_VERSION
+ENV PUB_VERION=${PUB_VERSION}
+
+RUN mkdir /root/input-cache \
+    && chmod a+rx /root \
+    && if [ -z ${PUB_VERSION} ] ; then curl -L https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar -o "/root/publisher.jar" --create-dirs ; else curl -L https://github.com/HL7/fhir-ig-publisher/releases/download/${PUB_VERSION}/publisher.jar -o "/root/publisher.jar" --create-dirs ; fi
+
+COPY entrypoint-offline.sh /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
+RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
+
+ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
+
+
+FROM offline AS offline-sushi
+
+RUN apk add --no-cache nodejs \
+    && apk add --no-cache --virtual .build-deps npm\
+    && npm install --global fsh-sushi@${SUSHI_VERSION} \
+    && apk del .build-deps

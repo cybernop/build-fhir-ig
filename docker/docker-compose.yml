@@ -1,64 +1,56 @@
 services:
-  build-fhir-ig-base-ubuntu:
-    image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
-    build:
-      dockerfile: Dockerfile.base-ubuntu
-
-  build-fhir-ig-base-alpine:
+  base-alpine:
     image: ghcr.io/cybernop/build-fhir-ig:base-alpine
     build:
       dockerfile: Dockerfile.base-alpine
 
-  build-fhir-ig-node-base-ubuntu:
-    image: ghcr.io/cybernop/build-fhir-ig:base-nodejs-ubuntu
+  base-ubuntu:
+    image: ghcr.io/cybernop/build-fhir-ig:base-ubuntu
     build:
-      dockerfile: Dockerfile.base-nodejs-ubuntu
+      dockerfile: Dockerfile.base-ubuntu
 
-  build-fhir-ig-node-base-alpine:
-    image: ghcr.io/cybernop/build-fhir-ig:base-nodejs-alpine
+  online-alpine:
+    image: cybernop/build-fhir-ig:online-alpine
     build:
-      dockerfile: Dockerfile.base-nodejs-alpine
-
-  build-fhir-ig-online:
-    image: cybernop/build-fhir-ig:online
-    build:
-      dockerfile: Dockerfile.final
+      dockerfile: Dockerfile.final-alpine
       target: online
-      args:
-        - OS_BASE=ubuntu
 
-  build-fhir-ig-1-8-8-online:
-    image: cybernop/build-fhir-ig:online-1.8.16
+  online-ubuntu:
+    image: cybernop/build-fhir-ig:online-ubuntu
     build:
-      dockerfile: Dockerfile.final
+      dockerfile: Dockerfile.final-ubuntu
       target: online
-      args:
-        - OS_BASE=ubuntu
-        - PUB_VERSION=1.8.16
 
-  build-fhir-ig-offline:
-    image: cybernop/build-fhir-ig:latest
+  offline-alpine:
+    image: cybernop/build-fhir-ig:1.8.16-alpine
     build:
-      dockerfile: Dockerfile.final
+      dockerfile: Dockerfile.final-alpine
       target: offline
       args:
-        - OS_BASE=ubuntu
-
-  build-fhir-ig-1-8-8-offline:
-    image: cybernop/build-fhir-ig:1.8.16
-    build:
-      dockerfile: Dockerfile.final
-      target: offline
-      args:
-        - OS_BASE=ubuntu
         - PUB_VERSION=1.8.16
 
-  build-fhir-ig-1-8-8-sushi-offline:
-    image: cybernop/build-fhir-ig:1.8.16-sushi
+  offline-ubuntu:
+    image: cybernop/build-fhir-ig:1.8.16-ubuntu
     build:
-      dockerfile: Dockerfile.final
+      dockerfile: Dockerfile.final-ubuntu
+      target: offline
+      args:
+        - PUB_VERSION=1.8.16
+
+  offline-sushi-alpine:
+    image: cybernop/build-fhir-ig:1.8.16-sushi-3.14.0-alpine
+    build:
+      dockerfile: Dockerfile.final-alpine
       target: offline-sushi
       args:
-        - OS_BASE=ubuntu
+        - PUB_VERSION=1.8.16
+        - SUSHI_VERSION=3.14.0
+
+  offline-sushi-ubuntu:
+    image: cybernop/build-fhir-ig:1.8.16-sushi-3.14.0-ubuntu
+    build:
+      dockerfile: Dockerfile.final-ubuntu
+      target: offline-sushi
+      args:
         - PUB_VERSION=1.8.16
         - SUSHI_VERSION=3.14.0
