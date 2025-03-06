@@ -54,3 +54,15 @@ services:
       args:
         - PUB_VERSION=1.8.16
         - SUSHI_VERSION=3.14.0
+
+  flex-ubuntu:
+    image: cybernop/build-fhir-ig:flex-ubuntu
+    build:
+      dockerfile: Dockerfile.flex-ubuntu
+      target: flex
+
+  flex-npm-ubuntu:
+    image: cybernop/build-fhir-ig:flex-npm-ubuntu
+    build:
+      dockerfile: Dockerfile.flex-ubuntu
+      target: flex-npm

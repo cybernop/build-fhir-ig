@@ -1,0 +1,64 @@
+FROM ubuntu:24.04 as flex
+
+##
+# Jeykll
+##
+
+# Install dependencies
+RUN apt update && apt install -y \
+    openjdk-21-jre \
+    ruby-full \
+    build-essential \
+    zlib1g-dev
+
+ENV GEM_HOME=/root/gems
+ENV PATH=$GEM_HOME/bin:$PATH
+
+RUN gem install jekyll bundler
+
+##
+# Firely Terminal
+##
+
+RUN apt update && apt install -y \
+    wget
+
+# Add Microsoft's .NET SDK repository and install .NET SDK
+RUN wget https://dot.net/v1/dotnet-install.sh \
+    && bash ./dotnet-install.sh --channel 8.0 --install-dir /usr/share/dotnet \
+    && ln -s /usr/share/dotnet/dotnet /usr/local/bin \
+    && rm dotnet-install.sh
+
+# Install the Firely Terminal
+RUN dotnet tool install --global Firely.Terminal
+ENV PATH="$PATH:/root/.dotnet/tools"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
+
+##
+# Graphviz
+##
+
+RUN apt update && apt install -y \
+    python3-pydot \
+    graphviz
+
+##
+# Other dependencies for later steps
+##
+RUN apt install -y \
+    curl
+
+COPY entrypoint-flex.sh /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
+RUN chmod a+rwx /root
+RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
+
+ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
+
+
+FROM flex AS flex-npm
+
+RUN apt install -y nodejs npm
+ENV NPM_INSTALLED=1
