@@ -130,6 +130,7 @@ jobs:
           - "1.8.15"
           - "1.8.16"
         os:
+          - "alpine"
           - "ubuntu"
     permissions:
       contents: read
@@ -210,6 +211,7 @@ jobs:
           - "1.8.15"
           - "1.8.16"
         os:
+          - "alpine"
           - "ubuntu"
         sushi_version:
           - "3.10.0"
