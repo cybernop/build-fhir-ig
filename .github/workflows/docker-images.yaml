@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/docker-images.yaml"
       - "**/Dockerfile.base-*"
-      - "**/Dockerfile.final"
+      - "**/Dockerfile.final-*"
       - "**/entrypoint*.sh"
       - "**/genonce.sh"
   workflow_dispatch:
