@@ -55,11 +55,23 @@ services:
         - PUB_VERSION=1.8.16
         - SUSHI_VERSION=3.14.0
 
+  flex-alpine:
+    image: cybernop/build-fhir-ig:flex-alpine
+    build:
+      dockerfile: Dockerfile.flex-alpine
+      target: flex
+
   flex-ubuntu:
     image: cybernop/build-fhir-ig:flex-ubuntu
     build:
       dockerfile: Dockerfile.flex-ubuntu
       target: flex
+
+  flex-npm-alpine:
+    image: cybernop/build-fhir-ig:flex-npm-alpine
+    build:
+      dockerfile: Dockerfile.flex-alpine
+      target: flex-npm
 
   flex-npm-ubuntu:
     image: cybernop/build-fhir-ig:flex-npm-ubuntu

@@ -1,0 +1,46 @@
+FROM alpine AS flex
+
+##
+# Jeykll
+##
+
+RUN apk add --no-cache ruby-jekyll \
+    && gem install jekyll bundler
+
+##
+# Firely Terminal
+##
+
+# Add Microsoft's .NET SDK repository and install .NET SDK
+RUN apk add --no-cache dotnet8-sdk
+
+# Install the Firely Terminal
+RUN dotnet tool install --global Firely.Terminal
+ENV PATH="$PATH:/root/.dotnet/tools"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
+
+##
+# Graphviz
+##
+
+RUN apk add --update --no-cache graphviz ttf-freefont
+
+##
+# Runtime dependcies
+##
+RUN apk add --no-cache curl openjdk21-jre
+
+COPY entrypoint-flex.sh /root/entrypoint.sh
+COPY genonce.sh /root/genonce.sh
+
+RUN chmod a+rwx /root
+RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /root/genonce.sh
+
+ENTRYPOINT [ "/root/entrypoint.sh", "/project" ]
+
+
+FROM flex AS flex-npm
+
+RUN apk add --no-cache nodejs npm
+ENV NPM_INSTALLED=1
