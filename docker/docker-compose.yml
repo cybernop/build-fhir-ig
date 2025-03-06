@@ -14,6 +14,11 @@ services:
     build:
       dockerfile: Dockerfile.base-nodejs-ubuntu
 
+  build-fhir-ig-node-base-alpine:
+    image: ghcr.io/cybernop/build-fhir-ig:base-nodejs-alpine
+    build:
+      dockerfile: Dockerfile.base-nodejs-alpine
+
   build-fhir-ig-online:
     image: cybernop/build-fhir-ig:online
     build:
