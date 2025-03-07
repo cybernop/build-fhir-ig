@@ -298,8 +298,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           target: flex
 
-  flex-sushi-images:
-    name: Flex Sushi images
+  flex-npm-images:
+    name: Flex NPM images
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -342,8 +342,8 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=flex-sushi,enable=${{ matrix.os == env.DEFAULT_OS }}
-            type=raw,value=flex-sushi-${{ matrix.os }},enable=${{ matrix.os != env.DEFAULT_OS }}
+            type=raw,value=flex-npm,enable=${{ matrix.os == env.DEFAULT_OS }}
+            type=raw,value=flex-npm-${{ matrix.os }},enable=${{ matrix.os != env.DEFAULT_OS }}
 
       # Build and push Docker image with Buildx (push on tag)
       # https://github.com/docker/build-push-action
@@ -355,8 +355,8 @@ jobs:
           file: docker/Dockerfile.flex-${{ matrix.os }}
           platforms: ${{ env.PLATFORMS }}
           push: true
-          cache-from: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:flex-sushi-${{ matrix.os }}-buildcache
-          cache-to: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:flex-sushi-${{ matrix.os }}-buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:flex-npm-${{ matrix.os }}-buildcache
+          cache-to: type=registry,ref=${{ env.CACHE_REGISTRY }}/${{ env.IMAGE_NAME }}:flex-npm-${{ matrix.os }}-buildcache,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: flex-sushi
+          target: flex-npm
