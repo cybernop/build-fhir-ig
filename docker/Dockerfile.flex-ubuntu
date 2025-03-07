@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 as flex
+FROM ubuntu:24.04 AS flex
 
 ##
 # Jeykll
