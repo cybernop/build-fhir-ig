@@ -28,7 +28,7 @@ RUN apk add --update --no-cache graphviz ttf-freefont
 ##
 # Runtime dependcies
 ##
-RUN apk add --no-cache curl openjdk21-jre
+RUN apk add --no-cache curl openjdk21-jre zip
 
 COPY entrypoint-flex.sh /root/entrypoint.sh
 COPY genonce.sh /root/genonce.sh
