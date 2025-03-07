@@ -4,13 +4,16 @@ echo "Building with the following configuration:"
 if [ -z "$IGPUB_VERSION" ]; then
     IGPUB_VERSION=1.8.8
 fi
+
+IGPUB="IGPUB_VERSION=$IGPUB_VERSION"
 echo "IG Publisher: $IGPUB_VERSION"
 
 if [ ! -z "${SUSHI_VERSION}" ]; then
-    SUSHI=-sushi-${SUSHI_VERSION}
+    NPM=-npm
+    SUSHI="SUSHI_VERSION=$SUSHI_VERSION"
     echo "FSH Sushi: $SUSHI_VERSION"
 else
-    SUSHI=
+    NPM="SUSHI_VERSION="
 fi
 
 if [ -z "$OUTPUT_DIR" ]; then
@@ -41,12 +44,14 @@ if [ -z "$JAVA_OPTS" ]; then
 fi
 
 JAVA_OPTIONS="_JAVA_OPTIONS=$JAVA_OPTS"
-printf "Java options: $JAVA_OPTS\n\n\n"
+echo "Java options: $JAVA_OPTS"
 
-IMAGE=cybernop/build-fhir-ig:$IGPUB_VERSION$SUSHI
+IMAGE=cybernop/build-fhir-ig:flex$NPM-alpine
+echo "Docker image: $IMAGE"
+printf "\n\n"
 
 PROJECT_MOUNT=${PROJECT_DIR}:/project
 FHIR_CACHE_MOUNT=${HOME}/.fhir/packages:/root/.fhir/packages
 OUTPUT_MOUNT=${OUTPUT_DIR}:/output
 
-docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT -e $PUBLISH -e $JAVA_OPTIONS --pull always $IMAGE
+docker run --rm -v $PROJECT_MOUNT -v $FHIR_CACHE_MOUNT -v $OUTPUT_MOUNT -e $PUBLISH -e $IGPUB -e $SUSHI -e $JAVA_OPTIONS --pull always $IMAGE
