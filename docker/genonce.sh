@@ -58,4 +58,5 @@ fi
 printf "\nBuild IG archive at $OUTPUT_DIR/ig.zip..."
 zip -q -r ig.zip output
 cp -f ig.zip $OUTPUT_DIR
+cp -f /tmp/fhir-ig-publisher-tmp.log $OUTPUT_DIR
 printf "done\n\n"
