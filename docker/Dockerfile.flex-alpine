@@ -4,7 +4,7 @@ FROM alpine AS flex
 # Jeykll
 ##
 
-RUN apk add --no-cache ruby-jekyll \
+RUN apk add --no-cache jekyll \
     && gem install jekyll bundler
 
 ##
@@ -23,7 +23,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT="1"
 # Graphviz
 ##
 
-RUN apk add --update --no-cache graphviz ttf-freefont
+RUN apk add --update --no-cache graphviz fontconfig
 
 ##
 # Runtime dependcies
